@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head><body>
+<p>Believe it or not, when Mr. Paley was growing up, there were mainframe computers 
+  with over 500 simultaneous users all over the world. One of the cutting edge 
+  systems was called PLATO. At the time Mr. Paley used PLATO, in the 1970s and 
+  1980s, its rights were controlled by the University of Illinois and Control 
+  Data Corporation. For those who are interested in the history of PLATO, see 
+  <a href="http://www.cyber1.org/">http://www.cyber1.org</a>. </p>
+<p>The system itself was used heavily for educational software, but, as you might 
+  imagine, it had more than its fair share of games. While graphics were extremely 
+  limited, and the mouse was yet to be used as an input device, many of the games 
+  were fantastic in terms of user interface design. There were precursors to modern 
+  chat, email, and notesfiles. Had the system been marketed for games, rather 
+  than education, it seems plausible to me that the PC may not have taken off 
+  as it did. (Just my opinion, and I am probably dead wrong about this.)</p>
+<p>In this assignment, you will rewrite one of the games on the PLATO system. 
+  It is called hivolts. It was originally written either by Thomas Ahasic or Douglas 
+  Jones and later modified by Dirk Pellett. (Mr. Pellett is not sure who has the 
+  official rights to the game, but has no objection to our using it for educational 
+  purposes. I wish to thank Mr. Pellett for his courtesy, and if either Mr. Ahasic 
+  or Mr. Jones has an objection to this use, please drop me a note at <a href="mailto:jpaley@pausd.org">jpaley@pausd.org</a>.)</p>
+<p>Cutting edge 1970s computer graphics, in the form of hivolts, looked somewhat 
+  like this:</p>
+<p><img src="HiVolts_files/hivolts1.png" width="512" height="512"></p>
+<pre>FFFFFFFFFFFF       Legend:
+F   F      F         F: Fence
+F  +   1  2F         +: You
+F34 FF   F F         1,2,3,4,5,6,7,8,9,a,b,c: Mhos
+F  F       F
+F56     7  F
+F89 F a FF F
+F FF      bF
+FFF      FFF
+F  FF F    F
+F F cF   F F
+FFFFFFFFFFFF
+</pre>
+<p>Above is a randomly generated starting position for a game of hivolts followed 
+  by an ASCII picture of the same position. In the ASCII version, the + refers 
+  to You and the hexadecimal numbers (1, 2, ..., c) refer to Mhos. A Mho in this 
+  game is a creature that is trying to eat You up. A mho in physics is, according 
+  to <a href="http://dictionary.reference.com/browse/mho">Dictionary.com</a>, 
+  "a unit of conductance equal to the reciprocal of an ohm," also known 
+  as a siemens.</p>
+<p>Here are some characteristics of the game board.</p>
+<ul>
+  <li>The game board itself is a 12-by-12 bounded grid</li>
+  <li>There are three object types:</li>
+  <ol>
+    <li>You (the smiley face)</li>
+    <li>Twelve (12) Mhos which are stored as a list </li>
+    <li>Electric fences which cover the whole perimeter</li>
+    <li>Twenty (20) electric fences on the interior</li>
+  </ol>
+</ul>
+<p>Everything is randomly placed except for the fences that are on the perimeter.</p>
+<p>When it is Your turn, You are allowed to move to any adjacent square or you 
+  can jump. Adjacent is defined as one square away, either horizontal, vertical, 
+  or diagonal. There are three possibilities when you move onto an adjacent square: 
+</p>
+<p>If you move to an adjacent square, one of three thigns can happen:</p>
+<ol>
+<li>You move onto an electric fence and lose.</li>
+<li>You move onto a Mho and lose.</li>
+<li>You move onto an empty square.</li>
+</ol>
+When you jump, you move to a random square, but you are guaranteed that you will not land on an electric fence.  
+When you jump, it remains your turn to move.  So, there are only two possibilities if you jump. 
+<ol>
+<li>You jump onto a Mho and lose.</li>
+<li>You jump onto an empty square.</li>
+</ol>
+<p>If You jump and do not lose, it remains Your turn. Assuming that you move (not 
+  jump) onto an empty square, then the Mhos move, in the order in which they 
+  are stored in the list, as follows:</p>
+<ol>
+  <li>If you are directly vertical or hortizontal to a Mho, the Mho MUST 
+    move directly towards you one square. If this results in the Mho landing 
+    on an electric fence, the Mho is removed from the board. If it lands on 
+    an empty square, it remains on the board.</li>
+  <li>If the Mho is not directly horizontal or vertical from you, then it 
+    has three squares it can move to, the one that is diagonally towards you, 
+    one that is horizontal so that it would be closer to you, and one that is 
+    vertical so that it would be closer to you. The Mho will try to move onto 
+    an empty square in the following order: 
+    <ol>
+      <li>Diagonally towards you</li>
+      <li>If the horizontal distance towards you is greater than or equal to the 
+        vertical distance, move horizontally towards you; otherwise move vertically 
+        towards you</li>
+      <li> If the horizontal distance towards you is greater than or equal to 
+        the vertical distance, move vertically towards you; otherwise move horizontally 
+        towards you</li>
+      <li>If none of these can result in landing on an empty square, repeat the 
+        order with the attempt to move onto an electric fence</li>
+      <li>If none of these can result in landing on an electric fence, do not 
+        move (this happens when a Mho can only try to move onto other Mhos)</li>
+    </ol>
+</li></ol>
+<p>In the sample game shown, above, You start out at (3, 2). The upper left corner 
+  is (0, 0). Suppose You move to (4, 2). Some of the Mho moves will include:</p>
+<ul>
+  <li>The Mho at (4, 11) will move onto the electric fence at (4, 10) and 
+    will be eliminated</li>
+  <li>The Mho at (2, 3) will move to (3, 2)</li>
+  <li>The Mho at (11, 7) will move to (10, 7)</li>
+</ul>
+<p>After each Mho has moved once, it becomes Your turn. If there are no Mhos remaining, You win.</p>
+<p>Your assignment is to write the hivolts game in a JApplet with more modern 
+  graphics. I leave it to you to sort out the display features. Your grade on 
+  this assignment will be based primarily on whether the game is playable. You 
+  will need a KeyListener. The keys for moving You should be:</p>
+<p>Q: up and left<br>
+  W: up<br>
+  E: up and right<br>
+  A: left<br>
+  S: sit (stay on the same square for one turn)<br>
+  D: right<br>
+  Z: down and left<br>
+  X: down<br>
+  C: down and right</p>
+<p>I realize that there are arrow keys on a modern keyboard. You can include them 
+  in a redundant fashion, but the letter keys need to behave as specified. You 
+  will probably be interested in learning the switch statement in Java in order 
+  to make your life easier. (Switch is a conditional kind of like cond in Scheme, 
+  but it tests to see if a single variable is one of several values, so it is 
+  not as flexible as cond.)</p>
+<p>Your program needs to give the user feedback. If it is the user's turn, there 
+  should be an indication to that effect. If the user has won or lost, that should 
+  be indicated, along with a prompt (probably a button made visible) if the user 
+  wishes to play again or quit.</p>
+</body></html>
